@@ -10,7 +10,7 @@ public class CreateRandom {
         for (int i = 0; i < size; i++) {
             Random r = new Random();
             int randCh = r.nextInt();
-            randChars.append(randCh);
+            randChars.append((char)((byte)(randCh%256)));
         }
         out.write(randChars.toString().getBytes());
         out.close();

@@ -27,32 +27,52 @@ public class Main {
             String key, path;
             while (true) {
                 System.out.println("Select:\n1- Enter a File\n2- Random File\n3- Exit");
-                int bigChoice = input.nextInt();
+                String str_bigChoice = input.next();
+                int bigChoice = 3;
+                try {
+                    bigChoice = Integer.parseInt(str_bigChoice);
+                }
+                catch (Exception e) {
+                    System.out.println("we sayed enter a choice... Valid Choice :)");
+                    continue;
+                }
                 switch (bigChoice) {
                     case 1:
                         System.out.println("Choose:\n1- Encrypt\n2- Decrypt\n3- Exit");
                         int choice = input.nextInt();
-                        switch (choice) {
+                        innerSitch: switch (choice) {
                             case 1:
-                                ClearConsole();
-                                System.out.print("\nEnter a Key to encrypt with: ");
-                                key = input.next();
-                                System.out.print("Enter a file path to encrypt: ");
-                                path = input.next();
-                                System.out.println("\nEncrypting...");
-                                EncryptionDecryption.encrypteFile(path, EncryptionDecryption.calculateShiftFromKey(key));
-                                System.out.println("Done.");
-                                break;
+                               keyloop1: while (true) {
+                                    ClearConsole();
+                                    System.out.print("\nEnter a Key to encrypt with: ");
+                                    key = input.next();
+                                    if (EncryptionDecryption.calculateShiftFromKey(key) < 5) {
+                                        System.out.println("Week Key,Change it");
+                                        continue ;
+                                    }
+                                    System.out.print("Enter a file path to encrypt: ");
+                                    path = input.next();
+                                    System.out.println("\nStart Encrypting...");
+                                    if(EncryptionDecryption.encrypteFile(path, EncryptionDecryption.calculateShiftFromKey(key)))
+                                        System.out.println("Done.");
+                                    break innerSitch;
+                                }
                             case 2:
-                                ClearConsole();
-                                System.out.print("\nEnter a Key to decrypt with: ");
-                                key = input.next();
-                                System.out.print("Enter a file path to decrypt: ");
-                                path = input.next();
-                                System.out.println("\nDecrypting...");
-                                EncryptionDecryption.decrypteFile(path, EncryptionDecryption.calculateShiftFromKey(key));
-                                System.out.println("Done.");
-                                break;
+                                keyloop2: while(true) {
+                                    ClearConsole();
+                                    System.out.print("\nEnter a Key to decrypt with: ");
+                                    key = input.next();
+                                    if (EncryptionDecryption.calculateShiftFromKey(key) < 5) {
+                                        System.out.println("Week Key,Change it");
+                                        continue ;
+                                    }
+                                    System.out.print("Enter a file path to decrypt: ");
+                                    path = input.next();
+                                    System.out.println("\nDecrypting...");
+                                    if(EncryptionDecryption.decrypteFile(path, EncryptionDecryption.calculateShiftFromKey(key)))
+                                        System.out.println("Done.");
+                                    break innerSitch;
+                                }
                             case 3:
                                 System.exit(0);
                             default:
@@ -61,13 +81,14 @@ public class Main {
                         }
                         break;
                     case 2:
-                        System.out.println("Enter the size of the random file: ");
+                        System.out.println("Enter size in Bytes of the random file: ");
                         long size = input.nextLong();
                         System.out.println("Generating...");
                         CreateRandom.CreateRandomFile(size);
-                        System.out.println("Done.");
+                        System.out.println("Done. File Name = \"random.txt\"");
                         break;
                     case 3:
+                        System.out.println("\nBye..");
                         System.exit(0);
                     default:
                         System.out.println("Not a Valid Choice");

@@ -7,8 +7,9 @@ import java.util.Locale;
 
 public class EncryptionDecryption {
 
-    public static void encrypteFile(String path, int key) throws IOException {
+    public static boolean encrypteFile(String path, int key) throws IOException {
         String actual = readAllBytes(path);
+        if(actual== null) return false;
         byte[] buffer = actual.getBytes();
         byte[] output = new byte[buffer.length];
         for (int i = 0; i < buffer.length; i++) {
@@ -17,6 +18,7 @@ public class EncryptionDecryption {
         FileOutputStream resFile = new FileOutputStream(path);
         resFile.write(output);
         resFile.close();
+        return true;
     }
     public static int calculateShiftFromKey(String key){
         long sum = key.length();
@@ -26,8 +28,10 @@ public class EncryptionDecryption {
         }
         return (int) (sum%26);
     }
-    public static void decrypteFile(String path, int key) throws IOException {
+    public static boolean decrypteFile(String path, int key) throws IOException {
         String actual = readAllBytes(path);
+        if(actual== null) return false;
+
         byte[] buffer = actual.getBytes();
         byte[] output = new byte[buffer.length];
         for (int i = 0; i < buffer.length; i++) {
@@ -36,6 +40,7 @@ public class EncryptionDecryption {
         FileOutputStream resFile = new FileOutputStream(path);
         resFile.write(output);
         resFile.close();
+        return true;
     }
     private static String readAllBytes(String filePath) {
         String content = "";
@@ -46,7 +51,8 @@ public class EncryptionDecryption {
         }
         catch (IOException e)
         {
-            e.printStackTrace();
+            System.out.println("Error.. Probably not valid path");
+            return null;
         }
 
         return content;
